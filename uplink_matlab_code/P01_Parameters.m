@@ -15,9 +15,9 @@ ts = startTime:seconds(sampleTime):stopTime;
 NumLeoUser = 10;
 NumGeoUser = 10;
 %% Frequencies (Hz)
-fc = 11.5e9;                       % Base frequency in Ku-band (10.7-12.7 GHz)
+fc = 13.5e9;                       % Base frequency in Ku-band (12.75-14.5 GHz)
 numChannels = 15;                  % Number of available channels
-ChannelBW = 250e6;                 % Channel bandwidth of 250 MHz
+ChannelBW = 125e6;                 % Channel bandwidth of 250 MHz
 Rb = 150e6;                        % Bit rate (bps)
 
 %% LEO Walker-Star Constellation Parameters
@@ -49,8 +49,8 @@ geo.Inc = 0;                       % Inclination in degrees for Equatorial plane
 geo.omega = 0;                     % Argument of periapsis
 geo.mu = 0;                        % True anamoly
 %% Transmit Power (in dBW)
-geoPower = 10 * log10(100e3);    % GEO Tx power: 300 W → ~24.77 dBW
-leoPower = 10 * log10(5e3);      % LEO Tx power: 5 W → ~36.98 dBm
+geoPower = 10 * log10(50e3);    % GEO Tx power: 300 W → ~24.77 dBW
+leoPower = 10 * log10(1e3);      % LEO Tx power: 5 W → ~36.98 dBm
 SINRThreshold = 5;
 %% Antenna Parameters (Dish Diameter in meters)
 leo.Antenna = 0.6;              % LEO satellite antenna diameter
