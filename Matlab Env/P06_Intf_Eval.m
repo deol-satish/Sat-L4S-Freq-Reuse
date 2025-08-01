@@ -7,6 +7,8 @@ SINR_mW_dict = NaN(NumGS, T);  % [NumGS x T]
 Intf_mW_dict = NaN(NumGS, T);  % [NumGS x T]
 Noise_mW = 10^(ThermalNoisedBm / 10);
 SE = zeros(1, T);
+berQPSK = NaN(NumGS, T);
+berMQAM = NaN(NumGS, T);
 
 % LEO_channelArray = 6:15;
 % LEO_channelArray = [5,  4,  1,  1,  6, 14, 14,  1,  6,  5];
@@ -120,6 +122,16 @@ for t = 1:T
         SINR_mW_dict(userIdx, t) = SINR_mW;
         Intf_mW_dict(userIdx, t) = PintTotal_mW;
         Intf(userIdx, t) = Pint_totaldB;
+
+        snrLinear = SINR_mW;
+
+        % QPSK BER
+        berQPSK(userIdx, t) = qfunc(sqrt(2 * snrLinear));
+        
+        % M-QAM BER (e.g., M = 16 for 16-QAM)
+        M = 16;
+        berMQAM(userIdx, t) = (4 / log2(M)) * (1 - 1 / sqrt(M)) * qfunc(sqrt(3 * snrLinear / (M - 1)));
+
         %% Print full debug info
         fprintf('[t=%d] User %d → Channel %d: Psig=%.2f dBm, Interf=%.2f dBm, SINR=%.2f dB\n', ...
             t, userIdx, ch_user, Psig_dBm, Pint_totaldB, SINR(userIdx, t));
