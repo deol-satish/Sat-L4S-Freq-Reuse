@@ -32,12 +32,6 @@ GsLocations = {
     'Port_Macquarie',-31.4300, 152.9080;
     'Mildura',      -34.1855, 142.1625};
 
-
-% GsLocations = {
-%     'Sydney',       -33.8688, 151.2093;
-%     'Melbourne',    -37.8136, 144.9631;
-%  };
-
 % NumLeoUser = size(GsLocations,1)/2;     % 10 uesers each with seperate channel (10 Channels)
 % NumGeoUser = size(GsLocations,1)/2;     % 10 uesers each with seperate channel (10 Channels)
 NumGS = NumLeoUser + NumGeoUser;        % Total ground stations

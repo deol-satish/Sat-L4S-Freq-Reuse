@@ -141,6 +141,9 @@ class CogSatEnv(gymnasium.Env):
         Thrpt = np.array(self.eng.workspace['Thrpt'])
         SE = np.array(self.eng.workspace['SE'])
         FreqAlloc = np.array(self.eng.workspace['FreqAlloc'])
+        berQPSK = np.array(self.eng.workspace['berQPSK'])
+        berMQAM = np.array(self.eng.workspace['berMQAM'])
+        
 
         np.save(f'{self.saved_folder}/{extra_tag}_SINR.npy', SINR)
         np.save(f'{self.saved_folder}/{extra_tag}_Intf.npy', Intf)
@@ -149,6 +152,8 @@ class CogSatEnv(gymnasium.Env):
         np.save(f'{self.saved_folder}/{extra_tag}_Thrpt.npy', Thrpt)
         np.save(f'{self.saved_folder}/{extra_tag}_SE.npy', SE)
         np.save(f'{self.saved_folder}/{extra_tag}_FreqAlloc.npy', FreqAlloc)
+        np.save(f'{self.saved_folder}/{extra_tag}_berQPSK.npy', berQPSK)
+        np.save(f'{self.saved_folder}/{extra_tag}_berMQAM.npy', berMQAM)
     
     
     def get_matlab_ts(self):
