@@ -44,7 +44,7 @@ class CogSatEnv(gymnasium.Env):
         self.eng = matlab.engine.start_matlab()
         self.eng.cd(self.eng.pwd(), nargout=0)  # ensure working directory is set
 
-        self.eng.addpath(r'./matlab_code', nargout=0)
+        self.eng.addpath(r'./downlink_matlab_code', nargout=0)
 
         # Initialize the MATLAB scenario and Save Baseline
 
