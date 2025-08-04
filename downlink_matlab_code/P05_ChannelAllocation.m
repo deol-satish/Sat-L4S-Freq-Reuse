@@ -84,6 +84,9 @@ PservGEO = squeeze(PservGEO);                        % [NumGS × Time]
 Serv_idxGEO =  GSGEOFilter .* squeeze(Serv_idxGEO);  % [NumGS × Time]
 %% Find the final channel allocations per users
 FreqAlloc = NaN(NumGS, length(ts));  % Initialize
+T = length(ts);
+Lat = zeros(NumGS, T);
+
 for t = 1:length(ts)
     for u = 1:NumGS
         if GSLEOFilter(u)
@@ -91,6 +94,9 @@ for t = 1:length(ts)
             if s_serv > 0 && ~isnan(s_serv)
                 % Get lat/lon from geographic coordinate frame
                 [pos, ~] = states(leoSats(s_serv), ts(t), 'CoordinateFrame', 'geographic');
+
+                [delay,timeOut] = latency(leoSats(s_serv),GS{u},ts(t));
+                Lat(u, t) = delay;
         
                 % % Print values
                 % fprintf('GS: %d | Time: %s | LEO-%02d | Latitude: %.4f°, Longitude: %.4f°\n', ...
@@ -109,3 +115,5 @@ for t = 1:length(ts)
         end
     end
 end
+
+

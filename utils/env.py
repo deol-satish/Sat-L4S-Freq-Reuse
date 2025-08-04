@@ -278,9 +278,10 @@ class CogSatEnv(gymnasium.Env):
         logging.info("===  After Action: FreqAlloc === %s",FreqAlloc)
         logging.info("=== common values === %s", num_common)
 
-        SINR_dB = np.array(self.eng.workspace['SINR'])[:, self.tIndex]
-        SINR_mW = np.array(self.eng.workspace['SINR_mW_dict'])[:, self.tIndex]
-        Intf_dB = np.array(self.eng.workspace['Intf_mW_dict'])[:, self.tIndex]
+        SINR_dB = np.array(self.eng.workspace['SINR'])
+        SINR_mW = np.array(self.eng.workspace['SINR_mW_dict'])
+        Intf_dB = np.array(self.eng.workspace['Intf'])
+        Intf_mw = np.array(self.eng.workspace['Intf_mW_dict'])
 
         logging.info("=== SINR dB === %s", SINR_dB)
         logging.info("=== Intf dB === %s", Intf_dB)
@@ -288,18 +289,22 @@ class CogSatEnv(gymnasium.Env):
          
 
 
-        SINR = np.array(self.eng.workspace['SINR_mW_dict'])
-        Intf = np.array(self.eng.workspace['Intf_mW_dict'])
+        # SINR = np.array(self.eng.workspace['SINR_mW_dict'])
+        # Intf = np.array(self.eng.workspace['Intf_mW_dict'])
         Thrpt = np.array(self.eng.workspace['Thrpt'])/(1024*1024)
 
 
         
 
         # Compute reward: sum of SINR across all users at current time step
-        Interference_to_leo_users = Intf[:self.NumLeoUser, self.tIndex]
-        Interference_to_geo_users = Intf[self.NumLeoUser:self.NumGeoUser+ self.NumLeoUser, self.tIndex]
-        SINR_of_LEO_users = SINR[:self.NumLeoUser, self.tIndex]
-        SINR_of_GEO_users = SINR[self.NumLeoUser:self.NumGeoUser+ self.NumLeoUser, self.tIndex]
+        mw_Interference_to_leo_users = Intf_mw[:self.NumLeoUser, self.tIndex]
+        mw_Interference_to_geo_users = Intf_mw[self.NumLeoUser:self.NumGeoUser+ self.NumLeoUser, self.tIndex]
+        db_Interference_to_leo_users = Intf_dB[:self.NumLeoUser, self.tIndex]
+        db_Interference_to_geo_users = Intf_dB[self.NumLeoUser:self.NumGeoUser+ self.NumLeoUser, self.tIndex]
+        mw_SINR_of_LEO_users = SINR_mW[:self.NumLeoUser, self.tIndex]
+        mw_SINR_of_GEO_users = SINR_mW[self.NumLeoUser:self.NumGeoUser+ self.NumLeoUser, self.tIndex]
+        db_SINR_of_LEO_users = SINR_dB[:self.NumLeoUser, self.tIndex]
+        db_SINR_of_GEO_users = SINR_dB[self.NumLeoUser:self.NumGeoUser+ self.NumLeoUser, self.tIndex]
         Thrpt_of_LEO_users = Thrpt[:self.NumLeoUser, self.tIndex]
 
 
@@ -309,9 +314,15 @@ class CogSatEnv(gymnasium.Env):
 
  
 
-        self.reward = np.sum(np.log10(SINR_of_LEO_users)) -  num_common
+        # self.reward = np.sum(np.log10(mw_SINR_of_LEO_users)) -  num_common
 
-        # reward = -1 *( np.median(Interference_to_leo_users) + 0.25 * np.median(Interference_to_geo_users))
+        # self.reward = -1 *( np.median(mw_Interference_to_leo_users) + 0.25 * np.median(mw_Interference_to_geo_users))
+        # self.reward = -1 *( np.median(db_Interference_to_leo_users) + 0.25 * np.median(db_Interference_to_geo_users))
+
+        self.reward = np.sum(np.log10(mw_SINR_of_LEO_users)) + 0.25*(np.sum(np.log10(mw_SINR_of_GEO_users)))
+        # self.reward = np.sum(np.log10(db_SINR_of_LEO_users)) + 0.25*(np.sum(np.log10(db_SINR_of_GEO_users)))
+        # self.reward = np.sum(np.log10(mw_SINR_of_LEO_users)) + (np.sum(np.log10(mw_SINR_of_GEO_users)))
+        # self.reward = np.sum(np.log10(db_SINR_of_LEO_users)) + (np.sum(np.log10(db_SINR_of_GEO_users)))
 
 
 
@@ -325,9 +336,6 @@ class CogSatEnv(gymnasium.Env):
             self.save_npy_data(f'Episode_{self.episode_number}')
             # Define MATLAB code as a string
             matlab_code = f"""
-            P03_GeometricSimulatoion
-            P04_RxSimulation
-            P05_ChannelAllocation
             T = length(ts);
             SINR = NaN(NumGS, T);
             Intf = NaN(NumGS, T);
