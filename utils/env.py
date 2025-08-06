@@ -44,7 +44,7 @@ class CogSatEnv(gymnasium.Env):
         self.eng = matlab.engine.start_matlab()
         self.eng.cd(self.eng.pwd(), nargout=0)  # ensure working directory is set
 
-        self.eng.addpath(r'./downlink_matlab_code', nargout=0)
+        self.eng.addpath(r'./starlink_downlink_matlab_code', nargout=0)
 
         # Initialize the MATLAB scenario and Save Baseline
 
@@ -317,12 +317,12 @@ class CogSatEnv(gymnasium.Env):
 
  
 
-        # self.reward = np.sum(np.log10(mw_SINR_of_LEO_users)) -  num_common
+        self.reward = np.sum(np.log10(mw_SINR_of_LEO_users)) -  num_common
 
         # self.reward = -1 *( np.median(mw_Interference_to_leo_users) + 0.25 * np.median(mw_Interference_to_geo_users))
         # self.reward = -1 *( np.median(db_Interference_to_leo_users) + 0.25 * np.median(db_Interference_to_geo_users))
 
-        self.reward = np.sum(np.log10(mw_SINR_of_LEO_users)) + 0.25*(np.sum(np.log10(mw_SINR_of_GEO_users)))
+        # self.reward = np.sum(np.log10(mw_SINR_of_LEO_users)) + 0.25*(np.sum(np.log10(mw_SINR_of_GEO_users)))
         # self.reward = np.sum(np.log10(db_SINR_of_LEO_users)) + 0.25*(np.sum(np.log10(db_SINR_of_GEO_users)))
         # self.reward = np.sum(np.log10(mw_SINR_of_LEO_users)) + (np.sum(np.log10(mw_SINR_of_GEO_users)))
         # self.reward = np.sum(np.log10(db_SINR_of_LEO_users)) + (np.sum(np.log10(db_SINR_of_GEO_users)))

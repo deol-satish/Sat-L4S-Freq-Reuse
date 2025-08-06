@@ -72,23 +72,23 @@ for t = 1:T
         %% Interference from LEO
         PintLEO_mW = 0;
         interferersLEO = [];  % <=== store interfering user indices
-        for s = 1:leoNum
-            for otherIdx = 1:NumGS
-                if otherIdx == userIdx || GSLEOFilter(otherIdx) == 0, continue; end
-                ch_other = ChannelListLeot(otherIdx, s);
-                if ch_other == ch_user
-                    Pint_dBm = PrxLEOt(userIdx, s);
-                    if ~isnan(Pint_dBm) && ~isinf(Pint_dBm)
-                        testInterf_mW = PintLEO_mW + 10^(Pint_dBm/10);
-                        SINR_test = Psig_mW / (testInterf_mW + Noise_mW);
-                        if 10*log10(SINR_test) < SINRThreshold
-                            PintLEO_mW = testInterf_mW;
-                            interferersLEO(end+1) = otherIdx;
-                        end
+
+        for otherIdx = 1:NumGS
+            if otherIdx == userIdx || GSLEOFilter(otherIdx) == 0, continue; end
+            ch_other = ChannelListLeot(otherIdx, s_serv);
+            if ch_other == ch_user
+                Pint_dBm = PrxLEOt(userIdx, s_serv);
+                if ~isnan(Pint_dBm) && ~isinf(Pint_dBm)
+                    testInterf_mW = PintLEO_mW + 10^(Pint_dBm/10);
+                    SINR_test = Psig_mW / (testInterf_mW + Noise_mW);
+                    if 10*log10(SINR_test) < SINRThreshold
+                        PintLEO_mW = testInterf_mW;
+                        interferersLEO(end+1) = otherIdx;
                     end
                 end
             end
         end
+
         %% Interference from GEO
         PintGEO_mW = 0;
         interferersGEO = [];  % <=== store interfering user indices
