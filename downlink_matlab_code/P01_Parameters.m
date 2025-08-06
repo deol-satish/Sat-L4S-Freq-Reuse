@@ -19,27 +19,14 @@ fc = 11.5e9;                       % Base frequency in Ku-band (10.7-12.7 GHz)
 numChannels = 15;                  % Number of available channels
 ChannelBW = 250e6;                 % Channel bandwidth of 250 MHz
 Rb = 150e6;                        % Bit rate (bps)
-
-
-% %% LEO Walker-Star Constellation Parameters
-% walker.a = 1200e3 + earthRadius;   % Semi-major axis
-% walker.alfa = earthRadius / walker.a;
-% walker.Inc = 87;                   % Inclination in degrees (typical for OneWeb)
-% walker.NPlanes = 12;               % Number of orbital planes 
-% walker.SatsPerPlane = 49;          % Number of satellites per plane 
-% walker.PhaseOffset = 1;            % Phase offset for phasing between planes
-% leoNum = walker.NPlanes * walker.SatsPerPlane;
-
-%% LEO Walker-Delta Constellation Parameters
-
-walker.a = 547e3 + earthRadius;     % Semi-major axis: 650 km altitude
-walker.Inc = 53;                  % Inclination in degrees (typical for Starlink)
-walker.NPlanes = 72;               % Number of orbital planes (original 18)
-walker.SatsPerPlane = 22;          % Number of satellites per plane (original 49)
+%% LEO Walker-Star Constellation Parameters
+walker.a = 1200e3 + earthRadius;   % Semi-major axis
+walker.alfa = earthRadius / walker.a;
+walker.Inc = 87;                   % Inclination in degrees (typical for OneWeb)
+walker.NPlanes = 12;               % Number of orbital planes 
+walker.SatsPerPlane = 49;          % Number of satellites per plane 
 walker.PhaseOffset = 1;            % Phase offset for phasing between planes
 leoNum = walker.NPlanes * walker.SatsPerPlane;
-
-
 %% GEO Satellite Parameters
 geoNum = 1;                        % Number of GEO satellites (adjust as needed)
 geoLong = [150, 160, 170];         % GEO longitudes [deg E]
