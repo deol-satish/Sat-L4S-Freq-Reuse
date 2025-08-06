@@ -127,7 +127,7 @@ for t = 1:T
         Intf(userIdx, t) = Pint_totaldB;
 
         % Thrpt Calculation
-        Thrpt(userIdx, t) = (ChannelBW * log2(1 + SINR_mW));  % Shannon capacity in bps
+        Thrpt(userIdx, t) = (ChannelBW * log2(1 + SINR_mW)) /(1e6);  % Shannon capacity in bps
 
         % QPSK BER
         berQPSK(userIdx, t) = qfunc(sqrt(2 * SINR_mW));
