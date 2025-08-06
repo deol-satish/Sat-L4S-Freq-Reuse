@@ -94,6 +94,9 @@ class CogSatEnv(gymnasium.Env):
         save_cmd = f"save('{filename}')"
         self.eng.eval(save_cmd, nargout=0)
 
+        Lat = np.array(self.eng.workspace['Lat'])
+        np.save(f'{self.saved_folder}/Baseline_Lat.npy', Lat)
+
 
           
 
