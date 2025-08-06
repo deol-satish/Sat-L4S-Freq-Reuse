@@ -33,6 +33,10 @@ SINR_mW_dict = NaN(NumGS, T);  % [NumGS x T]
 Intf_mW_dict = NaN(NumGS, T);  % [NumGS x T]
 Noise_mW = 10^(ThermalNoisedBm / 10);
 SE = zeros(1, T);
+berQPSK = NaN(NumGS, T);
+berMQAM = NaN(NumGS, T);
 
 FreqAlloc = NaN(NumGS, length(ts));  % Initialize
 t = 1;
+
+
