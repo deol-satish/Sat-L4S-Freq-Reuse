@@ -116,21 +116,25 @@ for t = 1:T
         EbN0 = Psig_mW *1e-3 / (Rb * kb * TempK);
         EbN0dB = 10 * log10(EbN0);
         SINR_mW = Psig_mW / (PintTotal_mW + Noise_mW);
-        % Thrpt(userIdx, t) = (ChannelBW * log2(1 + SINR_mW)) *1e-6;  % Shannon capacity in mbits/s
-        Thrpt(userIdx, t) = log2(1 + SINR_mW);  % Shannon capacity in bpHz
+        SNR = Psig_mW / (Noise_mW);
+
+        % Use either SNR or SINR for Thrpt and BER Calculation
+
+        
         SINR(userIdx, t) = 10 * log10(SINR_mW);
         SINR_mW_dict(userIdx, t) = SINR_mW;
         Intf_mW_dict(userIdx, t) = PintTotal_mW;
         Intf(userIdx, t) = Pint_totaldB;
 
-        snrLinear = SINR_mW;
+        % Thrpt Calculation
+        Thrpt(userIdx, t) = (ChannelBW * log2(1 + SINR_mW));  % Shannon capacity in bps
 
         % QPSK BER
-        berQPSK(userIdx, t) = qfunc(sqrt(2 * snrLinear));
+        berQPSK(userIdx, t) = qfunc(sqrt(2 * SINR_mW));
         
         % M-QAM BER (e.g., M = 16 for 16-QAM)
         M = 16;
-        berMQAM(userIdx, t) = (4 / log2(M)) * (1 - 1 / sqrt(M)) * qfunc(sqrt(3 * snrLinear / (M - 1)));
+        berMQAM(userIdx, t) = (4 / log2(M)) * (1 - 1 / sqrt(M)) * qfunc(sqrt(3 * SINR_mW / (M - 1)));
 
         %% Print full debug info
         fprintf('[t=%d] User %d → Channel %d: Psig=%.2f dBm, Interf=%.2f dBm, SINR=%.2f dB\n', ...
